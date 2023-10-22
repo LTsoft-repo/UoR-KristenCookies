@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataModel.Model.Entities;
@@ -12,8 +13,10 @@ public record Cookie : Entity
 
 public static class CookieExtensions
 {
+    [ UsedImplicitly ]
     public static void SetupCookieRelations( this ModelBuilder builder ) { }
 
+    [ UsedImplicitly ]
     public static void SetupCookieUniqueConstraints( this ModelBuilder builder )
     {
         builder.Entity<Cookie>()

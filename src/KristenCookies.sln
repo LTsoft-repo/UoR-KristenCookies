@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "20_Stores", "20_Stores", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stores", "Stores\Stores.csproj", "{8FA38174-A12B-480F-92BC-F850BDCF1293}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{014ADED5-D77B-48DC-AFB4-FB3FFBFFF7B2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "40_Mvc", "40_Mvc", "{014ADED5-D77B-48DC-AFB4-FB3FFBFFF7B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

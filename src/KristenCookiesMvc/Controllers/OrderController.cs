@@ -48,7 +48,7 @@ public class OrderController : Controller
 
         var model = new OrderAddViewModel
         {
-            CustomerName = string.Empty,
+            Customer = new(),
             Cookies = resultCookies.Data?.Select( CookieItemDto.FromCookie ).ToList() ??
                       new()
         };
@@ -61,9 +61,16 @@ public class OrderController : Controller
     [ ValidateAntiForgeryToken ]
     public async Task<IActionResult> AddPost( OrderAddViewModel model )
     {
+        model.Customer.Name = model.Customer.Name?.Trim() ?? "";
+        model.Customer.Email = model.Customer.Email?.Trim() ?? "";
+
         var order = new Order
         {
-            CustomerName = model.CustomerName,
+            Customer = new()
+            {
+                Email = model.Customer.Email,
+                Name = model.Customer.Name
+            },
             Cookies = CookieItemDto.ToOderItems( model.Cookies ).ToList()
         };
 

@@ -16,7 +16,7 @@ public class OrderListItemDto
         {
             Id = order.Id,
             OrderDate = order.OrderedAtUtc,
-            CustomerName = order.CustomerName,
+            CustomerName = order.Customer.Name,
             Total = order.Cookies.Sum( c => c.Quantity ),
             Cookies = order.Cookies
                 .Select( c => new CookieItemDto

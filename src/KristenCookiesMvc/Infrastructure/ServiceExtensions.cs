@@ -33,9 +33,11 @@ public static class ServiceExtensions
     {
         builder.RegisterType<CookieStore>().As<IStore<Cookie>>();
         builder.RegisterType<OrderStore>().As<IStore<Order>>();
+        builder.RegisterType<CustomerStore>().As<IStore<Customer>>();
 
         builder.RegisterType<CookieManager>().As<ICookieManager<Cookie>>();
         builder.RegisterType<OrderManager>().As<IOrderManager<Order>>();
+        builder.RegisterType<CustomerManager>().As<ICustomerManager<Customer>>();
 
         return builder;
     }

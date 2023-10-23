@@ -51,14 +51,12 @@ public class CookieController : Controller
     [ ValidateAntiForgeryToken ]
     public async Task<IActionResult> Add( string name )
     {
-        var result = await cookieManager.AddAsync( name );
+        var result = await cookieManager.AddAsync( name.Trim() );
 
         if( !result.Success )
         {
             TempData["ErrorMessage"] = result.Error;
         }
-
-        // ToDo: Add cookie
 
         return RedirectToAction( nameof( List ), "Cookie" );
     }

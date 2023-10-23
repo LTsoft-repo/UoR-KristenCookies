@@ -14,6 +14,7 @@ public class OrderStore : Store<ApplicationDbContext, Order>
     public override IQueryable<Order> GetAll()
     {
         return DatabaseContext.Orders
+            .Include( e => e.Customer )
             .Include( e => e.Cookies )
             .ThenInclude( c => c.Cookie )
             .OrderBy( e => e.OrderedAtUtc );

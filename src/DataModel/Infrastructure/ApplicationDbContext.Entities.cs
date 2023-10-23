@@ -15,6 +15,9 @@ public partial class ApplicationDbContext
     [ UsedImplicitly ]
     public DbSet<OrderItem> OrderItems { get; set; } = null!;
 
+    [ UsedImplicitly ]
+    public DbSet<Customer> Customers { get; set; } = null!;
+
     protected virtual void AddEntities( ModelBuilder builder )
     {
         builder.SetupCookieRelations();
@@ -25,5 +28,8 @@ public partial class ApplicationDbContext
 
         builder.SetupOrderItemRelations();
         builder.SetupOrderItemUniqueConstraints();
+
+        builder.SetupCustomerRelations();
+        builder.SetupCustomerUniqueConstraints();
     }
 }

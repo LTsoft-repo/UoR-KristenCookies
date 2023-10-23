@@ -7,9 +7,11 @@ namespace DataModel.Model.Entities;
 public record Order : Entity
 {
     [ Required ]
-    [ MaxLength( 500 ) ]
     [ UsedImplicitly ]
-    public string CustomerName { get; set; } = null!;
+    public Guid CustomerId { get; set; }
+
+    [ UsedImplicitly ]
+    public Customer Customer { get; set; } = null!;
 
     [ UsedImplicitly ]
     public List<OrderItem> Cookies { get; set; } = new();
@@ -22,7 +24,15 @@ public record Order : Entity
 public static class OrderExtensions
 {
     [ UsedImplicitly ]
-    public static void SetupOrderRelations( this ModelBuilder builder ) { }
+    public static void SetupOrderRelations( this ModelBuilder builder )
+    {
+        builder.Entity<Order>()
+            .HasOne( x => x.Customer )
+            .WithMany()
+            .HasForeignKey( x => x.CustomerId )
+            .IsRequired()
+            .OnDelete( DeleteBehavior.Restrict );
+    }
 
     [ UsedImplicitly ]
     public static void SetupOrderUniqueConstraints( this ModelBuilder builder ) { }

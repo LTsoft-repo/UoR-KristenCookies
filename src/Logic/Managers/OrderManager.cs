@@ -10,25 +10,36 @@ namespace Logic.Managers;
 public class OrderManager : IOrderManager<Order>
 {
     [ UsedImplicitly ]
+    protected readonly ICustomerManager<Customer> CustomerManager;
+
+    [ UsedImplicitly ]
     protected readonly IStore<Order> OrderStore;
 
-    public OrderManager( IStore<Order> orderStore )
+    public OrderManager( IStore<Order> orderStore, ICustomerManager<Customer> customerManager )
     {
         OrderStore = orderStore;
+        CustomerManager = customerManager;
     }
 
     public virtual async Task<Result<Order>> PlaceOrderAsync( Order order )
     {
-        var cookieCount = order.Cookies.Sum( cookie => cookie.Quantity );
+        var canAdd = await CanAddAsync( order );
 
-        if( cookieCount < 12 || cookieCount % 12 != 0 )
+        if( !string.IsNullOrEmpty( canAdd ) )
         {
             return new()
             {
                 Success = false,
-                Code = ResultErrorCode.IncompleteDozen,
-                Error = "Order must contain complete dozens."
+                Code = ResultErrorCode.Validation,
+                Error = canAdd
             };
+        }
+
+        var customerAddResult = await CustomerManager.FindByEmailAsync( order.Customer.Email );
+
+        if( customerAddResult.Success )
+        {
+            order.Customer = customerAddResult.Data!;
         }
 
         try
@@ -100,5 +111,41 @@ public class OrderManager : IOrderManager<Order>
                 Error = ex.Message
             };
         }
+    }
+
+    protected virtual string ValidateEntity( Order entity )
+    {
+        if( string.IsNullOrWhiteSpace( entity.Customer.Email ) )
+        {
+            return "You must provide the customer e-mail.";
+        }
+
+        var cookieCount = entity.Cookies.Sum( cookie => cookie.Quantity );
+
+        if( cookieCount < 12 || cookieCount % 12 != 0 )
+        {
+            return "The Order must contain complete dozens.";
+        }
+
+        return "";
+    }
+
+    protected virtual async Task<string> CanAddAsync( Order entity )
+    {
+        var isValidInput = ValidateEntity( entity );
+
+        if( isValidInput != "" )
+        {
+            return isValidInput;
+        }
+
+        var result = await CustomerManager.FindByEmailAsync( entity.Customer.Email );
+
+        if( !result.Success && string.IsNullOrWhiteSpace( entity.Customer.Name ) )
+        {
+            return "The Customer does not exists. Please provide a name.";
+        }
+
+        return "";
     }
 }

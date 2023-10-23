@@ -1,6 +1,7 @@
 ﻿using DataModel.Model.Entities;
 using JetBrains.Annotations;
 using Logic.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Stores.Infrastructure;
 
 namespace Logic.Managers;
@@ -20,13 +21,14 @@ public class CookieManager : ICookieManager<Cookie>
     {
         var cookie = new Cookie { Name = name };
 
-        var canAddError = CanAdd( cookie );
+        var canAddError = await CanAddAsync( cookie );
 
         if( canAddError != "" )
         {
             return new()
             {
                 Success = false,
+                Code = ResultErrorCode.Validation,
                 Error = canAddError
             };
         }
@@ -197,7 +199,7 @@ public class CookieManager : ICookieManager<Cookie>
 
             var cookie = cookieResult.Data! with { Name = name };
 
-            var isValidCookie = ValidateCookie( cookie );
+            var isValidCookie = ValidateEntity( cookie );
 
             if( isValidCookie != "" )
             {
@@ -238,9 +240,9 @@ public class CookieManager : ICookieManager<Cookie>
         }
     }
 
-    protected virtual string ValidateCookie( Cookie cookie )
+    protected virtual string ValidateEntity( Cookie entity )
     {
-        if( string.IsNullOrWhiteSpace( cookie.Name ) )
+        if( string.IsNullOrWhiteSpace( entity.Name ) )
         {
             return "You must provide which cookie you are adding.";
         }
@@ -248,18 +250,18 @@ public class CookieManager : ICookieManager<Cookie>
         return "";
     }
 
-    protected virtual string CanAdd( Cookie cookie )
+    protected virtual async Task<string> CanAddAsync( Cookie entity )
     {
-        var isValidInput = ValidateCookie( cookie );
+        var isValidInput = ValidateEntity( entity );
 
         if( isValidInput != "" )
         {
             return isValidInput;
         }
 
-        var existingCookie = CookieStore.GetAll().FirstOrDefault( c => c.Name.ToLower() == cookie.Name.ToLower() );
+        var existingEntity = await CookieStore.GetAll().FirstOrDefaultAsync( c => c.Name.ToLower() == entity.Name.ToLower() );
 
-        if( existingCookie != null )
+        if( existingEntity != null )
         {
             return "The is already a cookie with that name.";
         }

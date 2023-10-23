@@ -5,8 +5,10 @@ public enum ResultErrorCode
     None,
     IncompleteDozen,
     EmptyOrder,
+    Validation,
     StoreError,
-    AlreadyExists
+    AlreadyExists,
+    DoesNotExist
 }
 
 public class Result<T>

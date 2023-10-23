@@ -20,12 +20,14 @@ public class CookieManager : ICookieManager<Cookie>
     {
         var cookie = new Cookie { Name = name };
 
-        if( CanAdd( cookie ) != "" )
+        var canAddError = CanAdd( cookie );
+
+        if( canAddError != "" )
         {
             return new()
             {
                 Success = false,
-                Error = CanAdd( cookie )
+                Error = canAddError
             };
         }
 
@@ -240,7 +242,7 @@ public class CookieManager : ICookieManager<Cookie>
     {
         if( string.IsNullOrWhiteSpace( cookie.Name ) )
         {
-            return "You must provide which cookie you are adding";
+            return "You must provide which cookie you are adding.";
         }
 
         return "";
@@ -259,7 +261,7 @@ public class CookieManager : ICookieManager<Cookie>
 
         if( existingCookie != null )
         {
-            return "The Cookie already exists";
+            return "The is already a cookie with that name.";
         }
 
         return "";

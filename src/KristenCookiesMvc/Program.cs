@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 using KristenCookiesMvc.Configuration;
 using KristenCookiesMvc.Infrastructure;
 using Logging;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Serilog;
 using ConfigurationProvider = Configuration.ConfigurationProvider;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
@@ -38,13 +39,19 @@ public class Program
             // Add services to the container.
             builder.Services.AddLogging( b => b.AddSerilog( dispose: true ) );
 
-            builder.Services.AddAuthentication()
+            // Adds Google Authentication.
+            builder.Services.AddAuthentication( options => { options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; } )
+                .AddCookie( options =>
+                {
+                    options.LoginPath = "/account/google-login"; // Must be lowercase
+                } )
                 .AddGoogle( options =>
                 {
                     options.ClientId = authenticationConfiguration.ClientId;
                     options.ClientSecret = authenticationConfiguration.ClientSecret;
                 } );
 
+            // Adds the database context.
             builder.Services.AddDbContext<ApplicationDbContext>(
                 databaseConfiguration.ConnectionString,
                 ServiceLifetime.Scoped );
@@ -102,10 +109,15 @@ public class Program
 
     public static void ConfigureContainer( ContainerBuilder builder )
     {
+        // Register the configuration.
         builder.RegisterConfiguration();
 
+        // Registers the logger.
         builder.Register<ILogger>( c => c.Resolve<ILogger<Program>>() );
         builder.ReplaceTypeWithGenericTypeBasedOnRequestingType<ILogger, ILogger<object>>();
+
+        // Registers the Managers and Stores.
+        builder.RegisterServices();
     }
 
     public static void ConfigureLog( ConfigurationProvider configurationProvider )

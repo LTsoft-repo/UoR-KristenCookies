@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Orders";
+}
+
+@model OrderListViewModel
+
+<h2>Order History</h2>
+
+<div>
+    <a asp-action="Add" asp-controller="Order" class="btn btn-primary">Add Order</a>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Customer Name</th>
+        <th>Quantity</th>
+        <th>Cookies</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in Model.Orders)
+    {
+        <tr>
+            <td>
+                <script>
+                    var utcDate = new Date('@order.OrderDate.ToString("o")Z'); // Parse UTC date
+                    var localDate = utcDate.toLocaleString(); // Convert to user's local time
+                    document.write(localDate);
+                </script>
+            </td>
+            <td>@order.CustomerName</td>
+            <td>@order.Total</td>
+            <td>
+                <ul>
+                    @foreach (var cookie in order.Cookies)
+                    {
+                        <li>@cookie.Name: @cookie.Quantity</li>
+                    }
+                </ul>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+

@@ -1,0 +1,32 @@
+﻿@model OrderAddViewModel
+
+<h2>Add an Order</h2>
+
+<form asp-action="AddPost" asp-controller="Order" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Customer.Email">Customer Email</label>
+        <input asp-for="Customer.Email" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label asp-for="Customer.Name">Customer Name</label>
+        <input asp-for="Customer.Name" class="form-control">
+    </div>
+
+    <h3>Select Cookies and Quantity:</h3>
+
+    <div class="form-row">
+        @for( var i = 0; i < Model.Cookies.Count; i++ )
+        {
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Cookies[i].Name">@Model.Cookies[i].Name</label>
+                    <input asp-for="Cookies[i].Quantity" class="form-control" type="number" min="0">
+                    <input type="hidden" asp-for="Cookies[i].Id" />
+                </div>
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Order</button>
+</form>

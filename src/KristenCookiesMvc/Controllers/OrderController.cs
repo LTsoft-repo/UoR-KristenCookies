@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KristenCookiesMvc.Controllers;
 
+[ Authorize ]
 [ Route( "orders" ) ]
 public class OrderController : Controller
 {

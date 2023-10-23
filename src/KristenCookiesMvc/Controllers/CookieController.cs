@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KristenCookiesMvc.Controllers;
 
+[ Authorize ]
 [ Route( "cookies" ) ]
 public class CookieController : Controller
 {

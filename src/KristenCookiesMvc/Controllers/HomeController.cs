@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using KristenCookiesMvc.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KristenCookiesMvc.Controllers;
@@ -15,6 +16,7 @@ public class HomeController : Controller
 
     public IActionResult Index() => View();
 
+    [ Authorize ]
     public IActionResult Privacy() => View();
 
     [ ResponseCache( Duration = 0, Location = ResponseCacheLocation.None, NoStore = true ) ]

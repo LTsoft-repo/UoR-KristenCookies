@@ -17,3 +17,19 @@ Be thoughtful and capture information so that Kristen can plan and so that she c
 
 Please include comments or help text in your code if you want to explain any decisions you make.
 
+## Solution
+I have developed the business layer using .NET 6. Within this layer, I've created entities for Cookies, Orders, and Customers using Entity Framework. These entities are then utilized by the Managers to handle the business logic.
+
+In addition, I've set up an ASP.NET application that incorporates the aforementioned services and includes a controller to manage incoming requests.
+
+The current views in the application are as follows:
+- A list of Cookies, which also allows the addition of new types.
+- A list of Orders, where new orders can be added.
+- A list of Customers, which can be added through the Orders view if they don't exist beforehand.
+
+I chose to implement the creation of Customers through the Orders view because I believe it's more intuitive to create a customer when you're in the process of creating an order for them. This approach streamlines the order creation process.
+
+When adding an order, the only required field for the customer is the email. If the customer does not already exist, the system prompts the user to enter their name and then creates the customer along with the order.
+
+## What was left behind
+was unable to create the reports mentioned in point 4 of the challenge. The development of the business logic and the MVC components ended up taking longer than originally anticipated, which left me with insufficient time to work on the reports.

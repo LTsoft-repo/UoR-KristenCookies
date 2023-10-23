@@ -1,0 +1,26 @@
+﻿@using DataModel.Model.Entities;
+@{
+    ViewData["Title"] = "Customers";
+}
+
+@model CustomerListViewModel
+
+<h2>List of Customers</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Customer Name</th>
+        <th>eMail</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var customer in Model.Customers)
+    {
+        <tr>
+            <td>@customer.Name</td>
+            <td>@customer.Email</td>
+        </tr>
+    }
+    </tbody>
+</table>

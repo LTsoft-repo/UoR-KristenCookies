@@ -6,7 +6,7 @@ using Stores.Infrastructure;
 namespace Logic.Managers;
 
 [ UsedImplicitly ]
-internal class CookieManager : ICookieManager<Cookie>
+public class CookieManager : ICookieManager<Cookie>
 {
     [ UsedImplicitly ]
     protected readonly IStore<Cookie> CookieStore;

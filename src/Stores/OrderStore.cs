@@ -15,6 +15,7 @@ public class OrderStore : Store<ApplicationDbContext, Order>
     {
         return DatabaseContext.Orders
             .Include( e => e.Cookies )
+            .ThenInclude( c => c.Cookie )
             .OrderBy( e => e.OrderedAtUtc );
     }
 }

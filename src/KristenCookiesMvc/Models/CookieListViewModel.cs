@@ -2,8 +2,8 @@
 
 namespace KristenCookiesMvc.Models;
 
-public record CookieListViewModel
+public class CookieListViewModel
 {
     public string Name;
-    public IEnumerable<Cookie> Cookies { get; init; } = Enumerable.Empty<Cookie>();
+    public IEnumerable<Cookie> Cookies { get; set; } = Enumerable.Empty<Cookie>();
 }

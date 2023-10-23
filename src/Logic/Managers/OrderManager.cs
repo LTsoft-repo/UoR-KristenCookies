@@ -21,7 +21,7 @@ public class OrderManager : IOrderManager<Order>
     {
         var cookieCount = order.Cookies.Sum( cookie => cookie.Quantity );
 
-        if( cookieCount % 12 != 0 )
+        if( cookieCount < 12 || cookieCount % 12 != 0 )
         {
             return new()
             {
@@ -33,6 +33,7 @@ public class OrderManager : IOrderManager<Order>
 
         try
         {
+            order = order with { OrderedAtUtc = DateTime.UtcNow };
             var addResult = await OrderStore.AddAsync( order );
 
             if( !addResult.Success )

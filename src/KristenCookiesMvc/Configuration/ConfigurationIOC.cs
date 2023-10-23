@@ -16,13 +16,9 @@ public static class ConfigurationIOC
                 .LoadLogConfiguration() )
             .SingleInstance();
 
-        builder.Register( context => new DatabaseConfiguration
-            {
-                ConnectionString = context.Resolve<IConfiguration>()
-                                       .GetConnectionString( "DefaultConnection" ) ??
-                                   ""
-            } )
-            .As<DatabaseConfiguration>()
+        builder.Register( context => context.Resolve<IConfiguration>()
+                .GetSection( ConfigurationSections.ConnectionStrings )
+                .LoadDatabaseConfiguration() )
             .SingleInstance();
 
         builder.Register( context => context.Resolve<IConfiguration>()

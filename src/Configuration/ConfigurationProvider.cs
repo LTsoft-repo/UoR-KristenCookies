@@ -6,7 +6,7 @@ namespace Configuration;
 
 public interface IConfigurationProvider
 {
-    T Get<T>();
+    T Get<T>() where T : notnull;
 }
 
 [ UsedImplicitly ]
@@ -22,5 +22,5 @@ public class ConfigurationProvider : IConfigurationProvider
         diContainer = containerBuilder.Build();
     }
 
-    public T Get<T>() => diContainer.Resolve<T>();
+    public T Get<T>() where T : notnull => diContainer.Resolve<T>();
 }

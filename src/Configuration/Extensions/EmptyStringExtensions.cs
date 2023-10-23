@@ -65,12 +65,13 @@ public static class EmptyStringExtensions
             return true;
         }
 
-        public void Set( string key, string value ) => baseProvider.Set( key, value );
+        public void Set( string key, string? value ) => baseProvider.Set( key, value );
 
         public IChangeToken GetReloadToken() => baseProvider.GetReloadToken();
 
         public void Load() => baseProvider.Load();
 
-        public IEnumerable<string> GetChildKeys( IEnumerable<string> earlierKeys, string parentPath ) => baseProvider.GetChildKeys( earlierKeys, parentPath );
+        public IEnumerable<string> GetChildKeys( IEnumerable<string> earlierKeys, string? parentPath )
+            => baseProvider.GetChildKeys( earlierKeys, parentPath );
     }
 }

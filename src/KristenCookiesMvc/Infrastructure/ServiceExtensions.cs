@@ -21,7 +21,7 @@ public static class ServiceExtensions
             dbContextLifetime );
 
         services.Add( new( typeof( DbContext ),
-            s => s.GetService<TDbContext>(),
+            s => s.GetService<TDbContext>() ?? throw new NullReferenceException( "No service registered for DbContext." ),
             dbContextLifetime ) );
 
         services.AddTransient<IMigrationApplier, MigrationApplier<TDbContext>>();

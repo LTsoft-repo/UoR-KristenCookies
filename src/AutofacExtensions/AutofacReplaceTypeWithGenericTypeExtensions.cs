@@ -3,15 +3,17 @@ using Autofac;
 using Autofac.Core;
 using Autofac.Core.Resolving;
 using Autofac.Core.Resolving.Pipeline;
+using JetBrains.Annotations;
 
 namespace AutofacExtensions;
 
 public static class AutofacReplaceTypeWithGenericTypeExtensions
 {
-    private static readonly FieldInfo segmentedStackArrayField =
+    private static readonly FieldInfo? SegmentedStackArrayField =
         typeof( SegmentedStack<ResolveRequestContext> )
             .GetField( "_array", BindingFlags.NonPublic|BindingFlags.Instance );
 
+    [ UsedImplicitly ]
     public static ContainerBuilder ReplaceTypeWithGenericTypeBasedOnRequestingType<T, TGeneric>(
         this ContainerBuilder builder )
         where TGeneric : T
@@ -44,7 +46,7 @@ public static class AutofacReplaceTypeWithGenericTypeExtensions
                             // SegmentedStack<> keeps its values in an array.
 
                             var stack = (ResolveRequestContext[])
-                                segmentedStackArrayField.GetValue( context.Operation.InProgressRequests );
+                                SegmentedStackArrayField.GetValue( context.Operation.InProgressRequests );
 
                             var i = 1;
 
